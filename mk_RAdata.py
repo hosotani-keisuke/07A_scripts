@@ -170,6 +170,8 @@ for scan in range(start, end):
     pixel = np.zeros(nlab)
     nsp_area = np.zeros(nlab)
     nsp_max = np.zeros(nlab)
+    nsp_99pt = np.zeros(nlab)
+    nsp_95pt = np.zeros(nlab)
     nsp_90pt = np.zeros(nlab)
     pix_stra = np.zeros(nlab)
     nsp_stra = np.zeros(nlab)
@@ -261,6 +263,8 @@ for scan in range(start, end):
                 undef_sfc[lab] += 1
 
     for lab in range(nlab):
+        nsp_99pt[lab] = np.percentile(np.array(nsp_values[lab]), 99)
+        nsp_95pt[lab] = np.percentile(np.array(nsp_values[lab]), 95)
         nsp_90pt[lab] = np.percentile(np.array(nsp_values[lab]), 90)
 
     tmp = ocean + land + coast + other_sfc + undef_sfc
@@ -304,6 +308,8 @@ for scan in range(start, end):
             ("pixel", "<" + str(nlab) + "i2"),
             ("nsp_area", "<" + str(nlab) + "f2"),
             ("nsp_max", "<" + str(nlab) + "f2"),
+            ("nsp_99pt", "<" + str(nlab) + "f2"),
+            ("nsp_95pt", "<" + str(nlab) + "f2"),
             ("nsp_90pt", "<" + str(nlab) + "f2"),
             ("pix_stra", "<" + str(nlab) + "i2"),
             ("nsp_stra", "<" + str(nlab) + "f2"),
@@ -341,6 +347,8 @@ for scan in range(start, end):
     output[0]["pixel"] = pixel
     output[0]["nsp_area"] = nsp_area
     output[0]["nsp_max"] = nsp_max
+    output[0]["nsp_99pt"] = nsp_90pt
+    output[0]["nsp_95pt"] = nsp_90pt
     output[0]["nsp_90pt"] = nsp_90pt
     output[0]["pix_stra"] = pix_stra
     output[0]["nsp_stra"] = nsp_stra
