@@ -170,6 +170,7 @@ for scan in range(start, end):
     pixel = np.zeros(nlab)
     nsp_area = np.zeros(nlab)
     nsp_max = np.zeros(nlab)
+    nsp_90pt = np.zeros(nlab)
     pix_stra = np.zeros(nlab)
     nsp_stra = np.zeros(nlab)
     nsp_stra_max = np.zeros(nlab)
@@ -189,6 +190,8 @@ for scan in range(start, end):
     other_sfc = np.zeros(nlab)
     undef_sfc = np.zeros(nlab)
 
+    nsp_values = [[] for i in range(nlab)]
+
     # main loop
     for i in range(nscn):
         for j in range(nang):
@@ -197,17 +200,17 @@ for scan in range(start, end):
             if lab == 0:
                 continue
 
-            lab = (
-                lab - 1
-            )  # labeling number in the database("lab") statrs from 0, while it was counted from 1 when labeling
+            lab = lab - 1
+            # labeling number in the database("lab") statrs from 0, while it was counted from 1 when labeling
 
             # total pixel
             pixel[lab] += 1
 
             # total precipitation
-            nsp_area[lab] += nsp[
-                i, j
-            ]  # note: nsp can't be undef, as long as the pixel is labelled
+            nsp_area[lab] += nsp[i, j]
+            # note: nsp can't be undef, as long as the pixel is labelled
+
+            nsp_values[i].append(nsp[i, j])
 
             if nsp[i, j] > nsp_max[lab]:
                 nsp_max[lab] = nsp[i, j]  # max precipitaton
@@ -246,11 +249,6 @@ for scan in range(start, end):
                 if ze[z, i, j] > 30 and z > top_30dBZ[lab]:
                     top_30dBZ[lab] = z
 
-            # if (nsz[i,j]>40):
-            #    pix_40dBZ[lab]+=1
-            # if (nsz[i,j]>30):
-            #    pix_30dBZ[lab]+=1
-
             if styp[i, j] >= 0 and styp[i, j] < 100:
                 ocean[lab] += 1
             elif styp[i, j] >= 100 and styp[i, j] < 200:
@@ -261,6 +259,9 @@ for scan in range(start, end):
                 other_sfc[lab] += 1
             else:
                 undef_sfc[lab] += 1
+
+    for lab in range(nlab):
+        nsp_90pt[lab] = np.percentile(np.array(nsp_values[lab]), 90)
 
     tmp = ocean + land + coast + other_sfc + undef_sfc
     ocean = ocean / tmp
@@ -303,6 +304,7 @@ for scan in range(start, end):
             ("pixel", "<" + str(nlab) + "i2"),
             ("nsp_area", "<" + str(nlab) + "f2"),
             ("nsp_max", "<" + str(nlab) + "f2"),
+            ("nsp_90pt", "<" + str(nlab) + "f2"),
             ("pix_stra", "<" + str(nlab) + "i2"),
             ("nsp_stra", "<" + str(nlab) + "f2"),
             ("nsp_stra_max", "<" + str(nlab) + "f2"),
@@ -339,6 +341,7 @@ for scan in range(start, end):
     output[0]["pixel"] = pixel
     output[0]["nsp_area"] = nsp_area
     output[0]["nsp_max"] = nsp_max
+    output[0]["nsp_90pt"] = nsp_90pt
     output[0]["pix_stra"] = pix_stra
     output[0]["nsp_stra"] = nsp_stra
     output[0]["nsp_stra_max"] = nsp_stra_max
