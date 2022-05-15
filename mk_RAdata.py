@@ -240,13 +240,13 @@ for scan in range(start, end):
                 sec_ra[lab] = sec[i]
                 msec_ra[lab] = msec[i]
 
-            if (prTyp[i, j] >= 1) and (prTyp[i, j] < 2):
+            if (ptyp[i, j] >= 1) and (ptyp[i, j] < 2):
                 pix_stra[lab] += 1
                 nsp_stra[lab] += nsp[i, j]
                 if nsp[i, j] > nsp_stra_max[lab]:
                     nsp_stra_max[lab] = nsp[i, j]
 
-            elif (prTyp[i, j] >= 2) and (prTyp[i, j] < 3):
+            elif (ptyp[i, j] >= 2) and (ptyp[i, j] < 3):
                 pix_conv[lab] += 1
                 nsp_conv[lab] += nsp[i, j]
                 if nsp[i, j] > nsp_conv_max[lab]:
