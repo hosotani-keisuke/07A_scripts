@@ -382,6 +382,6 @@ for scan in range(start, end):
     output[0]["coast"] = coast
     output[0]["other_sfc"] = other_sfc
 
-    f = open(f"./RAdata/RAdata.{scan:06}.bin", "wb")
+    f = open(f"../RAdata/RAdata.{scan:06}.bin", "wb")
     f.write(output)
     f.close()
