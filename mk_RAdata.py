@@ -1,5 +1,5 @@
 ###########################################################
-#              **make RainArea data ver.2**               #
+#                 **make RainArea data**                  #
 # coded by Keisuke HOSOTANI                               #
 # last modified : 2022/05/09                              #
 # Note: Be sure that labeling data have been ready.       #
@@ -47,6 +47,12 @@ for scan in range(start, end):
     except AssertionError:
         print("input KuR file may be broken: " + str(scan))
         continue
+    except FileNotFoundError:
+        print("KuR file not found: " + str(scan))
+        continue
+    except PermissionError:
+        print("KuR file permission denied: " + str(scan))
+        continue
 
     ######################################################
     #################[[READ TIME DATA]]###################
@@ -63,6 +69,12 @@ for scan in range(start, end):
         msec = data.value("msec")
     except AssertionError:
         print("input Time file may be broken: " + str(scan))
+        continue
+    except FileNotFoundError:
+        print("Time file not found: " + str(scan))
+        continue
+    except PermissionError:
+        print("Time file permission denied: " + str(scan))
         continue
 
     ######################################################
@@ -203,7 +215,7 @@ for scan in range(start, end):
                 continue
 
             lab = lab - 1
-            # labeling number in the database("lab") statrs from 0, while it was counted from 1 when labeling
+            # pointing index("lab") statrs from 0, while it was counted from 1 when labeling
 
             # total pixel
             pixel[lab] += 1
@@ -212,7 +224,7 @@ for scan in range(start, end):
             nsp_area[lab] += nsp[i, j]
             # note: nsp can't be undef, as long as the pixel is labelled
 
-            nsp_values[i].append(nsp[i, j])
+            nsp_values[lab].append(nsp[i, j])
 
             if nsp[i, j] > nsp_max[lab]:
                 nsp_max[lab] = nsp[i, j]  # max precipitaton
