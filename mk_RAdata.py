@@ -39,7 +39,7 @@ for scan in range(start, end):
         nsp = data.value("nsp").reshape([nscn, nang])
         nsz = data.value("nsz").reshape([nscn, nang])
         flagPrecip = data.value("flagPrecip").reshape([nscn, nang])
-        prTyp = data.value("prTyp").reshape([nscn, nang])
+        ptyp = data.value("ptyp").reshape([nscn, nang])
         styp = data.value("styp").reshape([nscn, nang])
         ze = data.value("ze").reshape([ncell1, nscn, nang])
         lon = data.value("lon").reshape([nscn, nang])
@@ -82,15 +82,15 @@ for scan in range(start, end):
     ######################################################
 
     # RA label
-    ifile = "./labeling_data/RainAreas/RAlabel.{:0=6}".format(scan) + ".npy"
+    ifile = "../labeling_data/RainAreas/RAlabel.{:0=6}".format(scan) + ".npy"
     label_RA = np.load(ifile)
 
     # 40dBZ label
-    ifile = "./labeling_data/40dBZ_Areas/40label.{:0=6}".format(scan) + ".npy"
+    ifile = "../labeling_data/40dBZ_Areas/40label.{:0=6}".format(scan) + ".npy"
     label_40 = np.load(ifile)
 
     # 30dBZ label
-    ifile = "./labeling_data/30dBZ_Areas/30label.{:0=6}".format(scan) + ".npy"
+    ifile = "../labeling_data/30dBZ_Areas/30label.{:0=6}".format(scan) + ".npy"
     label_30 = np.load(ifile)
 
     nlab = np.max(label_RA)
